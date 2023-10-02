@@ -154,7 +154,7 @@ public class Client {
         }
 
         for (Todo todo : todos) {
-            System.out.println(todo.getTaskName());
+            System.out.println(todo.toString());
         }
         return todos;
     }

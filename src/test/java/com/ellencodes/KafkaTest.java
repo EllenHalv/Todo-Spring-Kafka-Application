@@ -3,10 +3,11 @@ package com.ellencodes;
 import com.ellencodes.kafka.payload.Todo;
 import org.json.JSONException;
 import org.json.simple.JSONObject;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.Order;
 import java.util.ArrayList;
@@ -41,10 +42,12 @@ public class KafkaTest {
         jsonObject.put("taskName", "Make the bed");
 
         //anropa metod för att skicka till webapi
-        String response = sendToWebAPI(jsonObject);
+        String actual = sendToWebAPI(jsonObject);
+
+        String expected = "Json Message send to Topic";
 
         //assert
-        AssertEquals("Json Message send to Kafka Topic", response);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -54,16 +57,12 @@ public class KafkaTest {
         ArrayList<Todo> todos = getDataFromKafka("ellencodesJson");
         Todo testTodo = todos.get(todos.size() - 1);
 
-        //assert
-        AssertEquals(todo.getTaskName(), testTodo.getTaskName());
-    }
+        String expected = todo.getTaskName();
 
-    private void AssertEquals(String taskName, String taskName1) {
-        if (taskName.equals(taskName1)) {
-            System.out.println("Test passed");
-        } else {
-            System.out.println("Test failed");
-        }
+        String actual = testTodo.getTaskName();
+
+        //assert
+        assertEquals(expected, actual);
     }
 }
 
