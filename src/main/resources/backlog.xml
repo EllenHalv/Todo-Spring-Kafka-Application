@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Define an appender for console output -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Set the root logger level to INFO and add the CONSOLE appender -->
+    <root level="OFF">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Disable logging for all other loggers -->
+    <logger name="org.springframework" level="OFF" />
+    <logger name="org.apache.kafka" level="OFF" />
+    <logger name="org.apache.zookeeper" level="OFF" />
+    <!-- Add more loggers for libraries you want to mute -->
+</configuration>
