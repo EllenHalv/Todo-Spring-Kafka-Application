@@ -38,19 +38,30 @@ public class GuiPanel extends JPanel implements ActionListener {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         panel.add(scrollPane);
 
-        // add task button
+        // new task button
+        JButton newTaskButton = new JButton("New Task");
+        newTaskButton.setBounds(10, 750, 100, 25);
+        newTaskButton.addActionListener(this);
+        panel.add(newTaskButton);
+
+        frame.setVisible(true);
+
+        /*// add task button
         JButton addTaskButton = new JButton("Add Task");
-        addTaskButton.setBounds(10, 750, 100, 25);
+        addTaskButton.setBounds(100, 750, 100, 25);
         addTaskButton.addActionListener(this);
         panel.add(addTaskButton);
 
-        frame.setVisible(true);
+        frame.setVisible(true);*/
     }
+
+    //todo: check for tasks in the database and add them to the gui (each task is a task component)
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //action listener for the new task button
         String command = e.getActionCommand();
-        if (command.equalsIgnoreCase("Add Task")) {
+        if (command.equalsIgnoreCase("New Task")) {
             // create a task component
             TaskComponent taskComponent = new TaskComponent(taskComponentPanel);
             taskComponentPanel.add(taskComponent);
@@ -60,6 +71,21 @@ public class GuiPanel extends JPanel implements ActionListener {
             taskComponent.revalidate();
             taskComponent.repaint();
         }
+
+        //action listener for the add task button
+        /*if (command.equalsIgnoreCase("Add Task")) {
+            // Get the user's input from GUI components
+            String taskName = taskField.getText();
+            boolean done = *//* Determine the done status from the GUI or user input *//*;
+
+            // Create a new Task object
+            Task task = new Task();
+            task.setTaskName(taskName);
+            task.setDone(done);
+
+            // Use the TaskService to save the task to the database
+            taskService.saveTask(task);
+        }*/
 
     }
 
