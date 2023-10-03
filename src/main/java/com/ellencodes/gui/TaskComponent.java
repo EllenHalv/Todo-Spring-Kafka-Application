@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -52,6 +53,69 @@ public class TaskComponent extends JPanel implements ActionListener {
         this.add(taskField);
         this.add(addTaskButton);
         this.add(deleteTaskButton);
+
+        /*// Hämta alla todos från databasen när TaskComponent skapas
+        Client.getAllDbTodos();
+
+        // Vänta på att todos listan ska fyllas
+        // Fetch all db todos asynchronously
+        CompletableFuture<Void> fetchTodosFuture = CompletableFuture.runAsync(() -> {
+            Client.getAllDbTodos();
+        });
+
+        fetchTodosFuture.thenRunAsync(() -> {
+            // Wait until the todos list is populated, with a timeout if needed
+            try {
+                CompletableFuture<Void> waitFuture = CompletableFuture.runAsync(() -> {
+                    while (Client.getTodos() == null) {
+                        try {
+                            Thread.sleep(100); // Adjust sleep duration as needed
+                        } catch (InterruptedException ignored) {
+                            // Handle the exception as needed
+                        }
+                    }
+                });
+                try {
+                    waitFuture.get(10, TimeUnit.SECONDS); // Adjust the timeout as needed
+                } catch (TimeoutException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                // Ensure that the todos list is populated before proceeding
+                if (Client.getTodos() != null) {
+
+                    ArrayList<Todo> allTodos = Client.getTodos();
+
+                    // Skapa och lägg till en TaskComponent för varje todo
+                    for (Todo todo : allTodos) {
+                        createTaskComponent(todo);
+                    }
+                } else {
+                    // Handle the case where the todos list is not yet available
+                    System.err.println("Todos list is not available.");
+                }
+            } catch (RuntimeException ex) {
+                // Handle the exception as needed
+                System.err.println("RuntimeException: " + ex.getMessage());
+            }
+        });*/
+    }
+
+    // Skapa en TaskComponent för en given Todo
+    private void createTaskComponent(Todo todo) {
+        TaskComponent taskComponent = new TaskComponent(parentPanel);
+
+        // Sätt texten och checkbox-statusen baserat på todo
+        taskComponent.taskField.setText(todo.getTaskName());
+        if (todo.isDone()) {
+            taskComponent.checkBox.setSelected(true);
+            taskComponent.taskField.setText("<html><body><strike>" + taskComponent.taskField.getText() + "</strike></body></html>");
+        }
+        this.add(taskComponent);
     }
 
     @Override
@@ -148,7 +212,6 @@ public class TaskComponent extends JPanel implements ActionListener {
             parentPanel.remove(this);
             parentPanel.revalidate();
             parentPanel.repaint();
-
         }
     }
 }
