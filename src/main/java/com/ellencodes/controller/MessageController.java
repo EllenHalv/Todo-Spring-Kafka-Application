@@ -19,4 +19,16 @@ public class MessageController {
         kafkaProducer.sendMessage(todo);
         return ResponseEntity.ok("Json Message send to Topic");
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(@RequestBody String id) {
+        kafkaProducer.deleteMessage(id);
+        return ResponseEntity.ok("Json Message delete was called");
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<String> getAll() {
+        kafkaProducer.getAllMessage();
+        return ResponseEntity.ok("Json Message get was called");
+    }
 }

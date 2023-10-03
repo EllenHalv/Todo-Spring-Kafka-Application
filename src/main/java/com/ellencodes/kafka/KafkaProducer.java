@@ -28,4 +28,22 @@ public class KafkaProducer {
 
         kafkaProducer.send(message);
     }
+
+    public void deleteMessage(String id) {
+        Message<String> message = MessageBuilder.withPayload(
+                        id).setHeader(
+                        KafkaHeaders.TOPIC, "ellencodesJsonDelete").
+                build();
+
+        kafkaProducer.send(message);
+    }
+
+    public void getAllMessage() {
+        Message<Todo> message = MessageBuilder.withPayload(
+                        new Todo()).setHeader(
+                        KafkaHeaders.TOPIC, "ellencodesJsonGet").
+                build();
+
+        kafkaProducer.send(message);
+    }
 }

@@ -45,14 +45,6 @@ public class GuiPanel extends JPanel implements ActionListener {
         panel.add(newTaskButton);
 
         frame.setVisible(true);
-
-        /*// add task button
-        JButton addTaskButton = new JButton("Add Task");
-        addTaskButton.setBounds(100, 750, 100, 25);
-        addTaskButton.addActionListener(this);
-        panel.add(addTaskButton);
-
-        frame.setVisible(true);*/
     }
 
     //todo: check for tasks in the database and add them to the gui (each task is a task component)
@@ -72,21 +64,13 @@ public class GuiPanel extends JPanel implements ActionListener {
             taskComponent.repaint();
         }
 
-        //action listener for the add task button
-        /*if (command.equalsIgnoreCase("Add Task")) {
-            // Get the user's input from GUI components
-            String taskName = taskField.getText();
-            boolean done = *//* Determine the done status from the GUI or user input *//*;
-
-            // Create a new Task object
-            Task task = new Task();
-            task.setTaskName(taskName);
-            task.setDone(done);
-
-            // Use the TaskService to save the task to the database
-            taskService.saveTask(task);
-        }*/
-
+        //action listener for the remove task button
+        if (command.equalsIgnoreCase("Remove Task")) {
+            // remove the last task component
+            taskComponentPanel.remove(taskComponentPanel.getComponentCount() - 1);
+            taskComponentPanel.revalidate();
+            taskComponentPanel.repaint();
+        }
     }
 
     //todo: en consumer ska skriva ut datan i gui konsollen

@@ -1,6 +1,8 @@
 package com.ellencodes.client;
 
 import com.ellencodes.kafka.payload.Todo;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -26,6 +28,9 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Client {
+
+    private static ArrayList<Todo> todos;
+
     public static void main(String[] args) throws MalformedURLException {
 
         SpringApplication.run(Client.class, args);
@@ -157,5 +162,79 @@ public class Client {
             System.out.println(todo.toString());
         }
         return todos;
+    }
+
+    public static void deleteTodoById(Long id) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpDelete httpDelete = new HttpDelete("http://localhost:8080/api/v1/messages/delete");
+
+            // Skapa en JSON-förfrågningskropp
+            String jsonPayload = id.toString();
+            StringEntity entity = new StringEntity(jsonPayload, ContentType.APPLICATION_JSON);
+            httpDelete.setEntity(entity);
+
+            // Skicka förfrågan och hantera svaret
+            try (CloseableHttpResponse response = httpClient.execute(httpDelete)) {
+                HttpEntity responseEntity = response.getEntity();
+                if (responseEntity != null) {
+                    String responseString = EntityUtils.toString(responseEntity);
+                    System.out.println("Svar från server: " + responseString);
+                }
+            } catch (ParseException e) {
+                System.err.println("ParseException: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void getAllDbTodos() {
+        //hämta alla todos från databasen
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get");
+
+            // Skicka förfrågan och hantera svaret
+            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+                HttpEntity responseEntity = response.getEntity();
+                if (responseEntity != null) {
+                    String responseString = EntityUtils.toString(responseEntity);
+                    System.out.println("Svar från server: " + responseString);
+                }
+            } catch (ParseException e) {
+                System.err.println("ParseException: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setTodos(ArrayList<Todo> dbTodos) {
+        Client.todos = dbTodos;
+    }
+
+    public static ArrayList<Todo> getTodos() {
+        return todos;
+    }
+
+    public static Todo getTodoByName(String taskName) {
+        //hämta en todo baserat på namn
+        try {
+            //loopa igenom listan
+            for (Todo todo : todos) {
+                //om taskName finns i listan
+                if (todo.getTaskName().equals(taskName)) {
+                    //returnera tasken
+                    return todo;
+                }
+            }
+        } catch (NullPointerException e) {
+            System.err.println("NullPointerException: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }
