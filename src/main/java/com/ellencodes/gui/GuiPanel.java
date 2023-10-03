@@ -61,8 +61,6 @@ public class GuiPanel extends JPanel implements ActionListener {
         frame.setVisible(true);
     }
 
-    //todo: check for tasks in the database and add them to the gui (each task is a task component)
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -81,6 +79,9 @@ public class GuiPanel extends JPanel implements ActionListener {
 
         //action listener for the load from db button
         if (command.equalsIgnoreCase("Load from DB")) {
+            // Disable the button to prevent further clicks
+            ((JButton)e.getSource()).setEnabled(false);
+
             // Fetch all db todos asynchronously
             CompletableFuture<Void> fetchTodosFuture = CompletableFuture.runAsync(() -> {
                 Client.getAllDbTodos();
