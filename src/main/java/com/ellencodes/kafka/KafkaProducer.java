@@ -19,8 +19,6 @@ public class KafkaProducer {
     }
 
     public void sendMessage(Todo todo) {
-        //LOGGER.info(String.format("Message sent: %s", todo.toString()));
-
         Message<Todo> message = MessageBuilder.withPayload(
                         todo).setHeader(
                         KafkaHeaders.TOPIC, "ellencodesJson").
@@ -36,6 +34,7 @@ public class KafkaProducer {
                 build();
 
         kafkaProducer.send(message);
+        System.out.println("Message to delete was sent from producer: " + message);
     }
 
     public void getAllMessage() {
@@ -45,5 +44,15 @@ public class KafkaProducer {
                 build();
 
         kafkaProducer.send(message);
+    }
+
+    public void getOneMessage(String id) {
+        Message<String> message = MessageBuilder.withPayload(
+                        id).setHeader(
+                        KafkaHeaders.TOPIC, "ellencodesJsonGetOne").
+                build();
+
+        kafkaProducer.send(message);
+        System.out.println("Message to get one was sent from producer: " + message);
     }
 }

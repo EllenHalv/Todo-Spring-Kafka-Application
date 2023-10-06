@@ -1,6 +1,7 @@
 package com.ellencodes.client;
 
 import com.ellencodes.kafka.payload.Todo;
+import lombok.Getter;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -29,7 +30,11 @@ import java.util.Scanner;
 
 public class Client {
 
+    @Getter
     private static ArrayList<Todo> todos;
+    //hämta id värdet på den aktuella tasken
+    @Getter
+    private static Long currentTodoId;
 
     public static void main(String[] args) throws MalformedURLException {
 
@@ -81,6 +86,7 @@ public class Client {
         System.out.println("------------");
         System.out.println("1. Skriv data till Kafka Server");
         System.out.println("2. Hämta data från Kafka Server");
+
         System.out.println("0. Avsluta");
     }
 
@@ -216,25 +222,32 @@ public class Client {
         Client.todos = dbTodos;
     }
 
-    public static ArrayList<Todo> getTodos() {
-        return todos;
-    }
+    public static void getTodoById(Long id) {
+        //hämta en task baserat på id
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get/" + id);
 
-    public static Todo getTodoByName(String taskName) {
-        //hämta en todo baserat på namn
-        try {
-            //loopa igenom listan
-            for (Todo todo : todos) {
-                //om taskName finns i listan
-                if (todo.getTaskName().equals(taskName)) {
-                    //returnera tasken
-                    return todo;
+            // Skicka förfrågan och hantera svaret
+            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+                HttpEntity responseEntity = response.getEntity();
+                if (responseEntity != null) {
+                    String responseString = EntityUtils.toString(responseEntity);
+                    System.out.println("Svar från server: " + responseString);
                 }
+            } catch (ParseException e) {
+                System.err.println("ParseException: " + e.getMessage());
+                throw new RuntimeException(e);
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             System.err.println("NullPointerException: " + e.getMessage());
             throw new RuntimeException(e);
         }
-        return null;
+    }
+
+    public static void setCurrentTodoId(Long todoId) {
+        //sätt id värdet på den aktuella tasken
+        currentTodoId = todoId;
+        System.out.println("Id på den mottagna tasken: " + todoId);
+        System.out.println("Id på den aktuella tasken: " + currentTodoId);
     }
 }

@@ -24,7 +24,7 @@ public class Todo {
 
     @Override
     public String toString() {
-        return "\n-- Todo --" +
+        return "\n-- Todo --" + "\nid: " + id +
                 "\ntaskName: '" + taskName + '\'' +
                 "\ndone: " + done;
     }

@@ -17,18 +17,24 @@ public class MessageController {
     @PostMapping("/publish")
     public ResponseEntity<String> publish(@RequestBody Todo todo) {
         kafkaProducer.sendMessage(todo);
-        return ResponseEntity.ok("Json Message send to Topic");
+        return ResponseEntity.ok("sent publish message");
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@RequestBody String id) {
         kafkaProducer.deleteMessage(id);
-        return ResponseEntity.ok("Json Message delete was called");
+        return ResponseEntity.ok("sent delete message");
     }
 
     @GetMapping("/get")
     public ResponseEntity<String> getAll() {
         kafkaProducer.getAllMessage();
-        return ResponseEntity.ok("Json Message get was called");
+        return ResponseEntity.ok("sent get all message");
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<String> getOne(@PathVariable String id) {
+        kafkaProducer.getOneMessage(id);
+        return ResponseEntity.ok("sent get one message");
     }
 }
