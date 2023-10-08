@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.Order;
 import java.util.ArrayList;
-import static com.ellencodes.client.AppService.getDataFromKafka;
-import static com.ellencodes.client.AppService.sendToWebAPI;
+import static com.ellencodes.appservice.AppService.getDataFromKafka;
+import static com.ellencodes.appservice.AppService.sendToWebAPI;
 
 @SpringBootTest(classes = KafkaTodoApplication1002Application.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -24,12 +24,12 @@ public class KafkaTest {
     @BeforeAll
     static void beforeAll() throws JSONException {
         todo = new Todo();
-        todo.setTaskName("Make the bed");
+        todo.setTodoName("Make the bed");
         todo.setDone(false);
         todo.setId(1L);
 
         jsonObject = new JSONObject();
-        jsonObject.put("taskName", todo.getTaskName());
+        jsonObject.put("taskName", todo.getTodoName());
         jsonObject.put("doneStatus", todo.isDone());
         jsonObject.put("id", todo.getId());
     }
@@ -57,9 +57,9 @@ public class KafkaTest {
         ArrayList<Todo> todos = getDataFromKafka("ellencodesJson");
         Todo testTodo = todos.get(todos.size() - 1);
 
-        String expected = todo.getTaskName();
+        String expected = todo.getTodoName();
 
-        String actual = testTodo.getTaskName();
+        String actual = testTodo.getTodoName();
 
         //assert
         assertEquals(expected, actual);

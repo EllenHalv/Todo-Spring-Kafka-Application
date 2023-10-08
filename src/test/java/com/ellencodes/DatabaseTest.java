@@ -37,12 +37,12 @@ public class DatabaseTest {
     void createTodo() {
         //Skapa ett objekt av Todo med specifik data
         Todo todo = new Todo();
-        todo.setTaskName("do dishes");
+        todo.setTodoName("do dishes");
 
         //Spara todo till DB
         testTodo = todoRepository.save(todo);
 
-        assertNotNull(todoRepository.findById(testTodo.getId()).get().getTaskName());
+        assertNotNull(todoRepository.findById(testTodo.getId()).get().getTodoName());
 
         System.out.println(testTodo.getId());
     }
@@ -55,9 +55,9 @@ public class DatabaseTest {
         assertNotNull(fetchedTodo);
 
         //Updatera värdet i fetchedTodo
-        fetchedTodo.setTaskName("clean house");
+        fetchedTodo.setTodoName("clean house");
         todoRepository.save(fetchedTodo);
-        assertEquals("clean house", todoRepository.findById(testTodo.getId()).get().getTaskName());
+        assertEquals("clean house", todoRepository.findById(testTodo.getId()).get().getTodoName());
     }
 
     @Test

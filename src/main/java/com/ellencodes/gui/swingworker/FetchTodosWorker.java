@@ -1,8 +1,8 @@
 package com.ellencodes.gui.swingworker;
 
-import com.ellencodes.client.AppService;
+import com.ellencodes.appservice.AppService;
 import com.ellencodes.gui.GuiPanel;
-import com.ellencodes.gui.TaskComponent;
+import com.ellencodes.gui.TodoComponent;
 import com.ellencodes.kafka.payload.Todo;
 
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ellencodes.gui.GuiPanel.taskComponentPanel;
+import static com.ellencodes.gui.GuiPanel.todoComponentPanel;
 
 public class FetchTodosWorker extends SwingWorker<ArrayList<Todo>, Void> {
     @Override
@@ -21,20 +21,20 @@ public class FetchTodosWorker extends SwingWorker<ArrayList<Todo>, Void> {
 
     @Override
     protected void done() {
-        CompletableFuture<ArrayList<Todo>> todosFuture = TaskComponent.waitForListToBeLoaded();
+        CompletableFuture<ArrayList<Todo>> todosFuture = TodoComponent.waitForListToBeLoaded();
         todosFuture.thenAccept(todos -> {
             if (todos != null) {
                 for (Todo todoObject : todos) {
                     SwingUtilities.invokeLater(() -> {
-                        for (Component component : taskComponentPanel.getComponents()) {
-                            if (component instanceof TaskComponent) {
-                                TaskComponent taskComponent = (TaskComponent) component;
-                                if (taskComponent.getIdField().getText().equals(todoObject.getId().toString())) {
+                        for (Component component : todoComponentPanel.getComponents()) {
+                            if (component instanceof TodoComponent) {
+                                TodoComponent todoComponent = (TodoComponent) component;
+                                if (todoComponent.getIdField().getText().equals(todoObject.getId().toString())) {
                                     return;
                                 }
                             }
                         }
-                        GuiPanel.createTaskComponent(todoObject, taskComponentPanel);
+                        GuiPanel.createTodoComponent(todoObject, todoComponentPanel);
                     });
                 }
             } else {

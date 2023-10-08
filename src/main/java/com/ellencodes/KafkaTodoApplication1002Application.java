@@ -1,6 +1,6 @@
 package com.ellencodes;
 
-import com.ellencodes.client.AppService;
+import com.ellencodes.appservice.AppService;
 import com.ellencodes.gui.Gui;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,16 +23,9 @@ public class KafkaTodoApplication1002Application {
         // Start the Spring Boot application
         SpringApplication.run(KafkaTodoApplication1002Application.class, args);
 
-        // Start the client menu
-        boolean shouldExit = AppService.userMenu(); // start the client menu and get the exit status
-
-        // Keep running until user enters "0"
-        while (!shouldExit) {
-            shouldExit = AppService.userMenu();
-        }
-
-        // If shouldExit is true, stop the application
-        System.out.println("Exiting the application.");
-        System.exit(0);    }
-
+        System.out.println(
+                "------------------------------------" +
+                "\n  Welcome to the Todo Application!  " +
+                "\n------------------------------------");
+    }
 }

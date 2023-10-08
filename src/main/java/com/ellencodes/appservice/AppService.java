@@ -1,4 +1,4 @@
-package com.ellencodes.client;
+package com.ellencodes.appservice;
 
 import com.ellencodes.kafka.payload.Todo;
 import lombok.Getter;
@@ -32,80 +32,10 @@ public class AppService {
 
     @Getter
     private static ArrayList<Todo> todos;
-    //hämta id värdet på den aktuella tasken
     @Getter
     private static Long currentTodoId;
 
-    public static void main(String[] args) throws MalformedURLException {
-
-        SpringApplication.run(AppService.class, args);
-
-        userMenu();
-    }
-
-    public static boolean userMenu() throws MalformedURLException {
-        String userChoise = "";
-
-        do {
-
-            printMenu();
-
-            Scanner scan = new Scanner(System.in);
-            System.out.print("Gör ditt val: ");
-            userChoise = scan.nextLine();
-
-            switch (userChoise) {
-                case "1": {
-                    userInputForKafka();
-                    break;
-                }
-                case "2": {
-                    getDataFromKafka("ellencodesJson");
-                    break;
-                }
-                case "0": {
-                    break;
-                }
-                default: {
-                    System.out.println("Felaktig input. Försök igen");
-                    break;
-                }
-            }
-
-            if (!userChoise.equals("0")) {
-                System.out.println("Press any key to continue");
-                scan.nextLine();
-            }
-
-        } while (!userChoise.equals("0"));
-        return true;
-    }
-
-    public static void printMenu() {
-        System.out.println("Gör dit val!");
-        System.out.println("------------");
-        System.out.println("1. Skriv data till Kafka Server");
-        System.out.println("2. Hämta data från Kafka Server");
-
-        System.out.println("0. Avsluta");
-    }
-
-    public static void userInputForKafka() throws MalformedURLException {
-        Todo todo = new Todo();
-
-        //Låt användaren mata in egen data
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Skriv in en todo-uppgift: ");
-        String taskName = scan.nextLine();
-
-        todo.setTaskName(taskName);
-
-        JSONObject myObj = new JSONObject();
-        myObj.put("taskName", todo.getTaskName());
-
-        //Skicka Payload till WebAPI via en Request
-        sendToWebAPI(myObj);
-    }
+    public static void main(String[] args) {}
 
     public static String sendToWebAPI(JSONObject myObj) {
         String returnResp = "";
@@ -151,10 +81,9 @@ public class AppService {
         //Gå till början av Topic
         consumer.seekToBeginning(consumer.assignment());
 
-        //Create User list
         ArrayList<Todo> todos = new ArrayList<>();
 
-        //WhileLoop som hämtar i JSON format
+        //hämta i JSON format
         while (true) {
             ConsumerRecords<String, Todo> records = consumer.poll(Duration.ofMillis(100));
             if (records.isEmpty()) continue;
@@ -218,12 +147,7 @@ public class AppService {
         }
     }
 
-    public static void setTodos(ArrayList<Todo> dbTodos) {
-        AppService.todos = dbTodos;
-    }
-
     public static void getTodoById(Long id) {
-        //hämta en task baserat på id
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get/" + id);
 
@@ -245,9 +169,10 @@ public class AppService {
     }
 
     public static void setCurrentTodoId(Long todoId) {
-        //sätt id värdet på den aktuella tasken
         currentTodoId = todoId;
-        System.out.println("Id på den mottagna tasken: " + todoId);
-        System.out.println("Id på den aktuella tasken: " + currentTodoId);
+    }
+
+    public static void setTodos(ArrayList<Todo> dbTodos) {
+        AppService.todos = dbTodos;
     }
 }

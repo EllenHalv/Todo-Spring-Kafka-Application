@@ -12,11 +12,11 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String taskName;
+    private String todoName;
     private boolean done = false;
 
-    public Todo(String taskName) {
-        this.taskName = taskName;
+    public Todo(String todoName) {
+        this.todoName = todoName;
 
     }
 
@@ -25,7 +25,7 @@ public class Todo {
     @Override
     public String toString() {
         return "\n-- Todo --" + "\nid: " + id +
-                "\ntaskName: '" + taskName + '\'' +
+                "\ntodoName: '" + todoName + '\'' +
                 "\ndone: " + done;
     }
 }

@@ -1,6 +1,6 @@
 package com.ellencodes.kafka;
 
-import com.ellencodes.client.AppService;
+import com.ellencodes.appservice.AppService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 

@@ -8,15 +8,12 @@ import com.ellencodes.kafka.payload.Todo;
 
 @Service
 public class KafkaConsumer {
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(org.apache.kafka.clients.consumer.KafkaConsumer.class);
 
     @KafkaListener(
             topics = "ellencodesJson",
             groupId = "JsonGroup"
     )
     public void consume(Todo todo) {
-        //LOGGER.info(String.format("Json message recieved -> %s", todo.toString()));
         System.out.println("\nJson message recieved -> " + String.format(todo.toString()));
     }
 }

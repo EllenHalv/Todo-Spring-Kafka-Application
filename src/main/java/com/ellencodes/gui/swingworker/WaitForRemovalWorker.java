@@ -1,6 +1,6 @@
 package com.ellencodes.gui.swingworker;
 
-import com.ellencodes.client.AppService;
+import com.ellencodes.appservice.AppService;
 
 import javax.swing.*;
 

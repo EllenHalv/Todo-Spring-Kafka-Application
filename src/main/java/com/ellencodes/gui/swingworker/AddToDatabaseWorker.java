@@ -1,7 +1,7 @@
 package com.ellencodes.gui.swingworker;
 
-import com.ellencodes.client.AppService;
-import com.ellencodes.gui.TaskComponent;
+import com.ellencodes.appservice.AppService;
+import com.ellencodes.gui.TodoComponent;
 import com.ellencodes.kafka.payload.Todo;
 import org.json.simple.JSONObject;
 
@@ -18,7 +18,7 @@ public class AddToDatabaseWorker extends SwingWorker<Void, Void> {
     @Override
     protected Void doInBackground() throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("taskName", todo.getTaskName());
+        jsonObject.put("todoName", todo.getTodoName());
         AppService.sendToWebAPI(jsonObject);
         System.out.println("Data sent from gui panel");
         return null;
@@ -26,7 +26,7 @@ public class AddToDatabaseWorker extends SwingWorker<Void, Void> {
 
     @Override
     protected void done() {
-        CompletableFuture<Long> idFuture = TaskComponent.waitForIdToBeSet();
+        CompletableFuture<Long> idFuture = TodoComponent.waitForIdToBeSet();
         idFuture.thenAccept(id -> {
             System.out.println("ID fetched before adding to gui list: " + id);
 
