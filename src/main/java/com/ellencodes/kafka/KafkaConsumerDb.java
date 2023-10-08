@@ -1,6 +1,6 @@
 package com.ellencodes.kafka;
 
-import com.ellencodes.client.Client;
+import com.ellencodes.client.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -65,7 +65,7 @@ public class KafkaConsumerDb {
         ArrayList<Todo> todos = (ArrayList<Todo>) todoRepository.findAll();
 
         //skicka till en metod i clinet som sätter datan i en lista
-        Client.setTodos(todos);
+        AppService.setTodos(todos);
     }
 
     @KafkaListener(
@@ -81,11 +81,11 @@ public class KafkaConsumerDb {
         if (todoOptional.isPresent()) {
             System.out.println("Hittade todo med id: " + id);
             //skicka tillbaka att den hittades (returnera då id till gui)
-            Client.setCurrentTodoId(Long.valueOf(id));
+            AppService.setCurrentTodoId(Long.valueOf(id));
         } else {
             System.out.println("Hittade inte todo med id: " + id);
             //skicka tillbaka att den inte hittades (returnera då null till gui)
-            Client.setCurrentTodoId(0L);
+            AppService.setCurrentTodoId(0L);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.ellencodes.gui;
 
-import com.ellencodes.client.Client;
+import com.ellencodes.client.AppService;
 import com.ellencodes.gui.swingworker.WaitForRemovalWorker;
 import com.ellencodes.kafka.payload.Todo;
 import lombok.Getter;
@@ -81,7 +81,7 @@ public class TaskComponent extends JPanel implements ActionListener {
 
             if (taskId != null) {
                 CompletableFuture<Void> deleteTodoById = CompletableFuture.runAsync(() -> {
-                    Client.deleteTodoById(taskId);
+                    AppService.deleteTodoById(taskId);
                     System.out.println("sent id to delete from gui:" + taskId);
                 });
 
@@ -112,7 +112,7 @@ public class TaskComponent extends JPanel implements ActionListener {
 
         CompletableFuture.runAsync(() -> {
             while (true) {
-                Long currentId = Client.getCurrentTodoId();
+                Long currentId = AppService.getCurrentTodoId();
                 if (currentId != null) {
                     if (currentId == id) {
                         idFuture.complete(id);
@@ -136,7 +136,7 @@ public class TaskComponent extends JPanel implements ActionListener {
 
         CompletableFuture.runAsync(() -> {
             while (true) {
-                Long id = Client.getCurrentTodoId();
+                Long id = AppService.getCurrentTodoId();
                 if (id != null) {
                     idFuture.complete(id);
                     System.out.println("ID fetched from the database: " + id);
@@ -158,7 +158,7 @@ public class TaskComponent extends JPanel implements ActionListener {
 
         CompletableFuture.runAsync(() -> {
             while (true) {
-                ArrayList<Todo> todos = Client.getTodos();
+                ArrayList<Todo> todos = AppService.getTodos();
                 if (todos != null) {
                     listFuture.complete(todos);
                     System.out.println("List fetched from the database: " + todos);

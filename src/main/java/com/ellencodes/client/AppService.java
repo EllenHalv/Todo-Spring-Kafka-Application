@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.Scanner;
 
-public class Client {
+public class AppService {
 
     @Getter
     private static ArrayList<Todo> todos;
@@ -38,7 +38,7 @@ public class Client {
 
     public static void main(String[] args) throws MalformedURLException {
 
-        SpringApplication.run(Client.class, args);
+        SpringApplication.run(AppService.class, args);
 
         userMenu();
     }
@@ -219,7 +219,7 @@ public class Client {
     }
 
     public static void setTodos(ArrayList<Todo> dbTodos) {
-        Client.todos = dbTodos;
+        AppService.todos = dbTodos;
     }
 
     public static void getTodoById(Long id) {

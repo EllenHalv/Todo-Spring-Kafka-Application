@@ -1,6 +1,6 @@
 package com.ellencodes.gui.swingworker;
 
-import com.ellencodes.client.Client;
+import com.ellencodes.client.AppService;
 import com.ellencodes.gui.GuiPanel;
 import com.ellencodes.gui.TaskComponent;
 import com.ellencodes.kafka.payload.Todo;
@@ -15,7 +15,7 @@ import static com.ellencodes.gui.GuiPanel.taskComponentPanel;
 public class FetchTodosWorker extends SwingWorker<ArrayList<Todo>, Void> {
     @Override
     protected ArrayList<Todo> doInBackground() throws Exception {
-        Client.getAllDbTodos();
+        AppService.getAllDbTodos();
         return null;
     }
 

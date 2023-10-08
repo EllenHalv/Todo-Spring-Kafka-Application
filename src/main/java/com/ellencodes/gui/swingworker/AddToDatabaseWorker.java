@@ -1,6 +1,6 @@
 package com.ellencodes.gui.swingworker;
 
-import com.ellencodes.client.Client;
+import com.ellencodes.client.AppService;
 import com.ellencodes.gui.TaskComponent;
 import com.ellencodes.kafka.payload.Todo;
 import org.json.simple.JSONObject;
@@ -19,7 +19,7 @@ public class AddToDatabaseWorker extends SwingWorker<Void, Void> {
     protected Void doInBackground() throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("taskName", todo.getTaskName());
-        Client.sendToWebAPI(jsonObject);
+        AppService.sendToWebAPI(jsonObject);
         System.out.println("Data sent from gui panel");
         return null;
     }

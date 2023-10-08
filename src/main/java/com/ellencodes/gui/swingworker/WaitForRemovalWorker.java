@@ -1,6 +1,6 @@
 package com.ellencodes.gui.swingworker;
 
-import com.ellencodes.client.Client;
+import com.ellencodes.client.AppService;
 
 import javax.swing.*;
 
@@ -14,7 +14,7 @@ public class WaitForRemovalWorker extends SwingWorker<Long, Void> {
     @Override
     protected Long doInBackground() throws Exception {
         while (true) {
-            Long currentId = Client.getCurrentTodoId();
+            Long currentId = AppService.getCurrentTodoId();
             if (currentId != null && currentId.equals(id)) {
                 return id;
             }

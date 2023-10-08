@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.Order;
 import java.util.ArrayList;
-import static com.ellencodes.client.Client.getDataFromKafka;
-import static com.ellencodes.client.Client.sendToWebAPI;
+import static com.ellencodes.client.AppService.getDataFromKafka;
+import static com.ellencodes.client.AppService.sendToWebAPI;
 
 @SpringBootTest(classes = KafkaTodoApplication1002Application.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

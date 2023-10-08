@@ -1,6 +1,6 @@
 package com.ellencodes.gui;
 
-import com.ellencodes.client.Client;
+import com.ellencodes.client.AppService;
 import com.ellencodes.gui.swingworker.AddToDatabaseWorker;
 import com.ellencodes.kafka.payload.Todo;
 import org.json.simple.JSONObject;
@@ -79,7 +79,7 @@ public class GuiPanel extends JPanel implements ActionListener {
 
             // Fetch all db todos asynchronously
             CompletableFuture<Void> fetchTodosFuture = CompletableFuture.runAsync(() -> {
-                Client.getAllDbTodos();
+                AppService.getAllDbTodos();
             });
 
             // Wait for completion then fetch the list of todos
@@ -180,7 +180,7 @@ public class GuiPanel extends JPanel implements ActionListener {
 
         // Send the JSON object to the web API asynchronously
         CompletableFuture<Void> sendToWebAPI = CompletableFuture.runAsync(() -> {
-            Client.sendToWebAPI(jsonObject);
+            AppService.sendToWebAPI(jsonObject);
             System.out.println("Data sent from gui panel");
         });
 
@@ -195,7 +195,7 @@ public class GuiPanel extends JPanel implements ActionListener {
                 SwingUtilities.invokeLater(() -> {
                     // Fetch all db todos asynchronously
                     CompletableFuture<Void> fetchTodosFuture = CompletableFuture.runAsync(() -> {
-                        Client.getAllDbTodos();
+                        AppService.getAllDbTodos();
                     });
 
                     // Wait for completion then fetch the list of todos
