@@ -1,6 +1,7 @@
 package com.ellencodes;
 
-import com.ellencodes.client.Client;
+import com.ellencodes.appservice.AppService;
+import com.ellencodes.gui.Gui;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,17 +13,19 @@ import java.net.MalformedURLException;
 public class KafkaTodoApplication1002Application {
 
     public static void main(String[] args) throws MalformedURLException {
-        SpringApplication.run(KafkaTodoApplication1002Application.class, args);
+        System.setProperty("gui.enabled", "true");
 
-        boolean shouldExit = Client.userMenu(); // start the client menu and get the exit status
-
-        // Keep running until user enters "0"
-        while (!shouldExit) {
-            shouldExit = Client.userMenu();
+        // Start the GUI if the system property is set
+        if (System.getProperty("gui.enabled", "false").equalsIgnoreCase("true")) {
+            Gui.main(args);
         }
 
-        // If shouldExit is true, stop the application
-        System.out.println("Exiting the application.");
-        System.exit(0);    }
+        // Start the Spring Boot application
+        SpringApplication.run(KafkaTodoApplication1002Application.class, args);
 
+        System.out.println(
+                "------------------------------------" +
+                "\n  Welcome to the Todo Application!  " +
+                "\n------------------------------------");
+    }
 }

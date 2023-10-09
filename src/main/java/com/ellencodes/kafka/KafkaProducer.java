@@ -12,18 +12,42 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducer {
     private final KafkaTemplate<String, Todo> kafkaProducer;
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
 
     public KafkaProducer(KafkaTemplate<String, Todo> kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
     }
 
     public void sendMessage(Todo todo) {
-        //LOGGER.info(String.format("Message sent: %s", todo.toString()));
-
         Message<Todo> message = MessageBuilder.withPayload(
                         todo).setHeader(
                         KafkaHeaders.TOPIC, "ellencodesJson").
+                build();
+
+        kafkaProducer.send(message);
+    }
+
+    public void deleteMessage(String id) {
+        Message<String> message = MessageBuilder.withPayload(
+                        id).setHeader(
+                        KafkaHeaders.TOPIC, "ellencodesJsonDelete").
+                build();
+
+        kafkaProducer.send(message);
+    }
+
+    public void getAllMessage() {
+        Message<Todo> message = MessageBuilder.withPayload(
+                        new Todo()).setHeader(
+                        KafkaHeaders.TOPIC, "ellencodesJsonGet").
+                build();
+
+        kafkaProducer.send(message);
+    }
+
+    public void getOneMessage(String id) {
+        Message<String> message = MessageBuilder.withPayload(
+                        id).setHeader(
+                        KafkaHeaders.TOPIC, "ellencodesJsonGetOne").
                 build();
 
         kafkaProducer.send(message);
