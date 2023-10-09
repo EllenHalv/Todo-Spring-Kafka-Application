@@ -25,6 +25,5 @@ public class KafkaProducerResponse {
                 build();
 
         kafkaProducer.send(message);
-        System.out.println("kafkaProducerResponse skickade: " + todoId);
     }
 }

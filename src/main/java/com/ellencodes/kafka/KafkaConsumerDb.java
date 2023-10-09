@@ -10,7 +10,6 @@ import com.ellencodes.kafka.repository.TodoRepository;
 import java.util.ArrayList;
 import java.util.Optional;
 
-
 @Service
 public class KafkaConsumerDb {
 
@@ -25,13 +24,9 @@ public class KafkaConsumerDb {
             groupId = "JsonGroupDB"
     )
     public void writeToDb(Todo todo) {
-        System.out.println("Skickar data till DB!");
-        //skicka datan till databasen
         Todo dbTodo = todoRepository.save(todo);
 
-        //skicka ID till ellencodesJsonRespone topic
         kafkaProducerResponse.sendResponse(dbTodo.getId());
-        System.out.println("Skickar ID till ellencodesJsonRespone topic"+ dbTodo);
     }
 
     @KafkaListener(
@@ -39,17 +34,11 @@ public class KafkaConsumerDb {
             groupId = "JsonGroupDB"
     )
     public void deleteFromDb(String id) {
-        System.out.println("Tar bort data från DB!");
-
-        // Try to find the Todo by ID
         Optional<Todo> todoOptional = todoRepository.findById(Long.valueOf(id));
 
         if (todoOptional.isPresent()) {
-            System.out.println("Hittade todo med id: " + id);
             Todo todo = todoOptional.get();
             todoRepository.delete(todo);
-        } else {
-            System.out.println("Hittade inte todo med id: " + id);
         }
     }
 
@@ -59,12 +48,8 @@ public class KafkaConsumerDb {
             groupId = "JsonGroupDB"
     )
     public void getAllFromDb() {
-        System.out.println("Hämtar all data från DB!");
-
-        //hämta datan från databasen
         ArrayList<Todo> todos = (ArrayList<Todo>) todoRepository.findAll();
 
-        //skicka till en metod i clinet som sätter datan i en lista
         AppService.setTodos(todos);
     }
 
@@ -73,19 +58,10 @@ public class KafkaConsumerDb {
             groupId = "JsonGroupDB"
     )
     public void getOneFromDb(String id) {
-        System.out.println("Hämtar EN från DB!");
-
-        //hämta datan från databasen
         Optional<Todo> todoOptional = todoRepository.findById(Long.valueOf(id));
 
         if (todoOptional.isPresent()) {
-            System.out.println("Hittade todo med id: " + id);
-            //skicka tillbaka att den hittades (returnera då id till gui)
             AppService.setCurrentTodoId(Long.valueOf(id));
-        } else {
-            System.out.println("Hittade inte todo med id: " + id);
-            //skicka tillbaka att den inte hittades (returnera då null till gui)
-            AppService.setCurrentTodoId(0L);
         }
     }
 }

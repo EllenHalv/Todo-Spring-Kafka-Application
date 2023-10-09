@@ -38,7 +38,7 @@ public class TodoComponent extends JPanel implements ActionListener {
         // hidden id field
         idField = new JTextField();
         idField.setBounds(300, 750, 100, 25);
-        idField.setVisible(true);
+        idField.setVisible(false);
 
         // add all to this component
         this.add(checkBox);
@@ -88,7 +88,6 @@ public class TodoComponent extends JPanel implements ActionListener {
                 Long id = AppService.getCurrentTodoId();
                 if (id != null) {
                     idFuture.complete(id);
-                    System.out.println("ID fetched from the database: " + id);
                     break;
                 }
                 try {
@@ -110,7 +109,6 @@ public class TodoComponent extends JPanel implements ActionListener {
                 ArrayList<Todo> todos = AppService.getTodos();
                 if (todos != null) {
                     listFuture.complete(todos);
-                    System.out.println("List fetched from the database: " + todos);
                     break;
                 }
                 try {

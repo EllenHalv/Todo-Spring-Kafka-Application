@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducer {
     private final KafkaTemplate<String, Todo> kafkaProducer;
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
 
     public KafkaProducer(KafkaTemplate<String, Todo> kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
@@ -34,7 +33,6 @@ public class KafkaProducer {
                 build();
 
         kafkaProducer.send(message);
-        System.out.println("Message to delete was sent from producer: " + message);
     }
 
     public void getAllMessage() {
@@ -53,6 +51,5 @@ public class KafkaProducer {
                 build();
 
         kafkaProducer.send(message);
-        System.out.println("Message to get one was sent from producer: " + message);
     }
 }

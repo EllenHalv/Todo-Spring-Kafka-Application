@@ -20,7 +20,6 @@ public class AddToDatabaseWorker extends SwingWorker<Void, Void> {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("todoName", todo.getTodoName());
         AppService.sendToWebAPI(jsonObject);
-        System.out.println("Data sent from gui panel");
         return null;
     }
 
@@ -28,7 +27,6 @@ public class AddToDatabaseWorker extends SwingWorker<Void, Void> {
     protected void done() {
         CompletableFuture<Long> idFuture = TodoComponent.waitForIdToBeSet();
         idFuture.thenAccept(id -> {
-            System.out.println("ID fetched before adding to gui list: " + id);
 
             SwingUtilities.invokeLater(() -> {
                 FetchTodosWorker fetchTodosWorker = new FetchTodosWorker();

@@ -14,6 +14,5 @@ public class KafkaConsumer {
             groupId = "JsonGroup"
     )
     public void consume(Todo todo) {
-        System.out.println("\nJson message recieved -> " + String.format(todo.toString()));
     }
 }

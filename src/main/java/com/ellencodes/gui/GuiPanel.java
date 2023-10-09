@@ -17,7 +17,7 @@ public class GuiPanel extends JPanel implements ActionListener {
         JPanel panel = new JPanel();
 
         JFrame frame = new JFrame("Todo List Application");
-        frame.setSize(610, 650);
+        frame.setSize(510, 650);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
 
@@ -34,7 +34,7 @@ public class GuiPanel extends JPanel implements ActionListener {
         todoPanel.add(todoComponentPanel);
 
         JScrollPane scrollPane = new JScrollPane(todoPanel);
-        scrollPane.setBounds(10, 40, 575, 500); //TODO sätt tillbaka till 475
+        scrollPane.setBounds(10, 40, 475, 500);
         scrollPane.setMaximumSize(scrollPane.getPreferredSize());
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -99,10 +99,12 @@ public class GuiPanel extends JPanel implements ActionListener {
         dialog.setModal(true);
 
         JPanel dialogPanel = new JPanel();
-        dialogPanel.setLayout(new GridLayout(2, 2));
 
         JTextField todoNameField = new JTextField();
+        todoNameField.setPreferredSize(new Dimension(200, 30));
+
         JButton addButton = new JButton("Add Todo");
+        addButton.setPreferredSize(new Dimension(100, 30));
 
         dialogPanel.add(new JLabel("Todo Name:"));
         dialogPanel.add(todoNameField);

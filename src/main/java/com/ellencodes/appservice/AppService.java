@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -17,16 +18,13 @@ import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.json.simple.JSONObject;
-import org.springframework.boot.SpringApplication;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class AppService {
 
@@ -38,7 +36,7 @@ public class AppService {
     public static void main(String[] args) {}
 
     public static String sendToWebAPI(JSONObject myObj) {
-        String returnResp = "";
+        String responseString;
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/messages/publish");
@@ -49,22 +47,71 @@ public class AppService {
             httpPost.setEntity(entity);
 
             // Skicka förfrågan och hantera svaret
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-                HttpEntity responseEntity = response.getEntity();
-                if (responseEntity != null) {
-                    String responseString = EntityUtils.toString(responseEntity);
-                    System.out.println("Svar från server: " + responseString);
-                    returnResp = responseString;
-                }
-            } catch (ParseException e) {
-                System.err.println("ParseException: " + e.getMessage());
-                throw new RuntimeException(e);
-            }
+            responseString = sendRequest(httpClient, httpPost);
+
         } catch (IOException e) {
             System.err.println("IOException: " + e.getMessage());
             throw new RuntimeException(e);
         }
-        return returnResp;
+        return responseString;
+    }
+
+    public static String deleteTodoById(Long id) {
+        String responseString;
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpDelete httpDelete = new HttpDelete("http://localhost:8080/api/v1/messages/delete");
+
+            String jsonPayload = id.toString();
+            StringEntity entity = new StringEntity(jsonPayload, ContentType.APPLICATION_JSON);
+            httpDelete.setEntity(entity);
+
+            responseString = sendRequest(httpClient, httpDelete);
+
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return responseString;
+    }
+
+    public static String getAllDbTodos() {
+        String responseString;
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get");
+
+            responseString = sendRequest(httpClient, httpGet);
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return responseString;
+    }
+
+    private static String sendRequest(CloseableHttpClient httpClient, HttpUriRequestBase httpRequest) throws IOException {
+        String responseString = null;
+        try (CloseableHttpResponse response = httpClient.execute(httpRequest)) {
+            HttpEntity responseEntity = response.getEntity();
+            if (responseEntity != null) {
+                responseString = EntityUtils.toString(responseEntity);
+            }
+        } catch (ParseException e) {
+            System.err.println("ParseException: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return responseString;
+    }
+
+    public static String getTodoById(Long id) {
+        String responseString;
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get/" + id);
+
+            responseString = sendRequest(httpClient, httpGet);
+        } catch (NullPointerException | IOException e) {
+            System.err.println("NullPointerException: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return responseString;
     }
 
     public static ArrayList<Todo> getDataFromKafka(String topicName) {
@@ -97,75 +144,6 @@ public class AppService {
             System.out.println(todo.toString());
         }
         return todos;
-    }
-
-    public static void deleteTodoById(Long id) {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpDelete httpDelete = new HttpDelete("http://localhost:8080/api/v1/messages/delete");
-
-            // Skapa en JSON-förfrågningskropp
-            String jsonPayload = id.toString();
-            StringEntity entity = new StringEntity(jsonPayload, ContentType.APPLICATION_JSON);
-            httpDelete.setEntity(entity);
-
-            // Skicka förfrågan och hantera svaret
-            try (CloseableHttpResponse response = httpClient.execute(httpDelete)) {
-                HttpEntity responseEntity = response.getEntity();
-                if (responseEntity != null) {
-                    String responseString = EntityUtils.toString(responseEntity);
-                    System.out.println("Svar från server: " + responseString);
-                }
-            } catch (ParseException e) {
-                System.err.println("ParseException: " + e.getMessage());
-                throw new RuntimeException(e);
-            }
-        } catch (IOException e) {
-            System.err.println("IOException: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void getAllDbTodos() {
-        //hämta alla todos från databasen
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get");
-
-            // Skicka förfrågan och hantera svaret
-            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
-                HttpEntity responseEntity = response.getEntity();
-                if (responseEntity != null) {
-                    String responseString = EntityUtils.toString(responseEntity);
-                    System.out.println("Svar från server: " + responseString);
-                }
-            } catch (ParseException e) {
-                System.err.println("ParseException: " + e.getMessage());
-                throw new RuntimeException(e);
-            }
-        } catch (IOException e) {
-            System.err.println("IOException: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void getTodoById(Long id) {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get/" + id);
-
-            // Skicka förfrågan och hantera svaret
-            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
-                HttpEntity responseEntity = response.getEntity();
-                if (responseEntity != null) {
-                    String responseString = EntityUtils.toString(responseEntity);
-                    System.out.println("Svar från server: " + responseString);
-                }
-            } catch (ParseException e) {
-                System.err.println("ParseException: " + e.getMessage());
-                throw new RuntimeException(e);
-            }
-        } catch (NullPointerException | IOException e) {
-            System.err.println("NullPointerException: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
     }
 
     public static void setCurrentTodoId(Long todoId) {
