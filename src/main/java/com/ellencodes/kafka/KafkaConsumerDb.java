@@ -26,6 +26,7 @@ public class KafkaConsumerDb {
     public void writeToDb(Todo todo) {
         Todo dbTodo = todoRepository.save(todo);
 
+        // Send the id of the saved object to KafkaConsumerResponse
         kafkaProducerResponse.sendResponse(dbTodo.getId());
     }
 

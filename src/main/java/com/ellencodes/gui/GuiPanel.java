@@ -9,6 +9,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class represents the main GUI panel.
+ * This class uses SwingWorker to perform database operations in the background.
+ */
+
 public class GuiPanel extends JPanel implements ActionListener {
 
     public static JPanel todoComponentPanel;

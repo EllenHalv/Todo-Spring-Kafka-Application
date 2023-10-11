@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 public class KafkaTodoApplication {
 
     public static void main(String[] args) throws MalformedURLException {
+        // Set the system property to enable the GUI
         System.setProperty("gui.enabled", "true");
 
         // Start the GUI if the system property is set
@@ -22,6 +23,7 @@ public class KafkaTodoApplication {
         // Start the Spring Boot application
         SpringApplication.run(KafkaTodoApplication.class, args);
 
+        // Print a welcome message
         System.out.println(
                 "------------------------------------" +
                 "\n  Welcome to the Todo Application!  " +

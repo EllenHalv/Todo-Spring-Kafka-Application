@@ -7,6 +7,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+// This producer sends the ID of database-objects to KafkaConsumerResponse
 @Service
 public class KafkaProducerResponse {
 
@@ -18,7 +19,6 @@ public class KafkaProducerResponse {
     }
 
     public void sendResponse(Long todoId) {
-        // Publish the ID to the specified response topic
         Message<Long> message = MessageBuilder.withPayload(
                         todoId).setHeader(
                         KafkaHeaders.TOPIC, "ellencodesJsonResponse").

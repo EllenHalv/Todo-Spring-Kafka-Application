@@ -12,6 +12,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class represents a single todo component.
+ * This class uses SwingWorker to perform database operations in the background.
+ */
+
 @Getter
 public class TodoComponent extends JPanel implements ActionListener {
     private final JCheckBox checkBox;

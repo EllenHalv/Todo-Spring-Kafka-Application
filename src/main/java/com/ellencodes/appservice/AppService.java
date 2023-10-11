@@ -26,6 +26,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
 
+/**
+ * Class for sending and receiving data from the web API
+ * Is used by the GUI to perform create and delete actions
+ */
+
 public class AppService {
 
     @Getter
