@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.ellencodes.gui.GuiPanel.todoComponentPanel;
 
-public class FetchTodosWorker extends SwingWorker<ArrayList<Todo>, Void> {
+public class FetchAllTodosWorker extends SwingWorker<ArrayList<Todo>, Void> {
     @Override
     protected ArrayList<Todo> doInBackground() throws Exception {
         AppService.getAllDbTodos();

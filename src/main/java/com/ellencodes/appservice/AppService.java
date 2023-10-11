@@ -104,7 +104,7 @@ public class AppService {
     public static String getTodoById(Long id) {
         String responseString;
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get/" + id);
+            HttpGet httpGet = new HttpGet("http://localhost:8080/api/v1/messages/get/" + id.toString());
 
             responseString = sendRequest(httpClient, httpGet);
         } catch (NullPointerException | IOException e) {

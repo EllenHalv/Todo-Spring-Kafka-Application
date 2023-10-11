@@ -12,9 +12,8 @@ import static com.ellencodes.appservice.AppService.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.Order;
-import java.util.ArrayList;
 
-@SpringBootTest(classes = KafkaTodoApplication1002Application.class)
+@SpringBootTest(classes = KafkaTodoApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class KafkaTest {
 

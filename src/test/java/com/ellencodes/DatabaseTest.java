@@ -8,7 +8,7 @@ import com.ellencodes.kafka.payload.Todo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = KafkaTodoApplication1002Application.class)
+@SpringBootTest(classes = KafkaTodoApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DatabaseTest {
 

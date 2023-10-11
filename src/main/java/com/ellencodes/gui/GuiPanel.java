@@ -1,7 +1,7 @@
 package com.ellencodes.gui;
 
 import com.ellencodes.gui.swingworker.AddToDatabaseWorker;
-import com.ellencodes.gui.swingworker.FetchTodosWorker;
+import com.ellencodes.gui.swingworker.FetchAllTodosWorker;
 import com.ellencodes.kafka.payload.Todo;
 
 import javax.swing.*;
@@ -68,8 +68,8 @@ public class GuiPanel extends JPanel implements ActionListener {
             ((JButton)e.getSource()).setEnabled(false);
 
             // Fetch all db todos asynchronously
-            FetchTodosWorker fetchTodosWorker = new FetchTodosWorker();
-            fetchTodosWorker.execute();
+            FetchAllTodosWorker fetchAllTodosWorker = new FetchAllTodosWorker();
+            fetchAllTodosWorker.execute();
         }
     }
 
@@ -117,6 +117,7 @@ public class GuiPanel extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String todoName = todoNameField.getText();
+
                 Todo todo = new Todo();
                 todo.setTodoName(todoName);
 

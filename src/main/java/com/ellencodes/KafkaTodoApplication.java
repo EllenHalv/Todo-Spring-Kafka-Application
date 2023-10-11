@@ -1,6 +1,5 @@
 package com.ellencodes;
 
-import com.ellencodes.appservice.AppService;
 import com.ellencodes.gui.Gui;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +9,7 @@ import java.net.MalformedURLException;
 
 @SpringBootApplication
 
-public class KafkaTodoApplication1002Application {
+public class KafkaTodoApplication {
 
     public static void main(String[] args) throws MalformedURLException {
         System.setProperty("gui.enabled", "true");
@@ -21,7 +20,7 @@ public class KafkaTodoApplication1002Application {
         }
 
         // Start the Spring Boot application
-        SpringApplication.run(KafkaTodoApplication1002Application.class, args);
+        SpringApplication.run(KafkaTodoApplication.class, args);
 
         System.out.println(
                 "------------------------------------" +
